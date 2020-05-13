@@ -15,7 +15,7 @@ class FaqServiceTest extends TestCase
         Mockery::close();
     }
 
-    public function testAll()
+    public function testGetAllFaq()
     {
         $expectedFaq = factory(Faq::class, 1)->make();
         $repository = Mockery::mock(FaqRepositoryInterface::class);
@@ -24,5 +24,21 @@ class FaqServiceTest extends TestCase
         $service = new FaqService($repository);
         $faqs = $service->all();
         $this->assertEquals($expectedFaq, $faqs);
+    }
+
+    public function testCreateNewFaq()
+    {
+        $data = [
+            'answer' => 'foo',
+            'question' => 'bar',
+        ];
+        $expectedFaq = factory(Faq::class)->make($data);
+        $repository = Mockery::mock(FaqRepositoryInterface::class);
+        $repository->expects('create')->withArgs([$data])->andReturn($expectedFaq);
+
+        $service = new FaqService($repository);
+        $faq = $service->create($data);
+        $this->assertEquals($expectedFaq, $faq);
+
     }
 }

@@ -11,7 +11,7 @@ class FaqRepositoryTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testAll()
+    public function testGetAllFaq()
     {
         $repository = new FaqRepository();
 
@@ -21,5 +21,20 @@ class FaqRepositoryTest extends TestCase
         $faqs = $repository->all();
 
         $this->assertEquals($faq->toArray(), $faqs[0]->toArray());
+        $this->seeInDatabase('faqs', ['answer' => $faqs[0]->answer]);
+    }
+
+    public function testCreateFaq()
+    {
+        $repository = new FaqRepository();
+        $data = [
+            'answer' => 'foo',
+            'question' => 'bar',
+        ];
+        $faq = $repository->create($data);
+
+        $this->assertEquals('foo', $faq->answer);
+        $this->assertEquals('bar', $faq->question);
+        $this->seeInDatabase('faqs', $data);
     }
 }

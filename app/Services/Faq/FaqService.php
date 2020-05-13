@@ -23,4 +23,9 @@ class FaqService
     {
         return $this->faqRepository->all();
     }
+
+    public function create(array $request): Faq
+    {
+        return $this->faqRepository->create($request);
+    }
 }

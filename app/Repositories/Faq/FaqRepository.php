@@ -11,4 +11,9 @@ class FaqRepository implements FaqRepositoryInterface
     {
         return Faq::all();
     }
+
+    public function create(array $faq): Faq
+    {
+        return Faq::create($faq);
+    }
 }
